@@ -174,23 +174,27 @@ npm run dev
 | `GET /api/policy?threshold=70` | Sample enforcement count, GMV reviewed, and illustrative precision and recall |
 | `POST /api/score` | Score one JSON order with the refund, shared-device, account-takeover, and payment checks |
 
-## Deploy to Cloudflare
+## Deployment
 
-Workers build settings:
-
-```text
-Production branch: main
-Build command: npm install
-Deploy command: npm run deploy
-Root directory: leave blank
-```
-
-Do not enter `/` in the root-directory field. Manual deployment:
+From the repository root:
 
 ```bash
-npm install
-npm run deploy
+npx wrangler deploy
 ```
+
+That command publishes the Worker described in `wrangler.jsonc`.
+
+| Setting | Value |
+|---|---|
+| Worker name | `tiktok-shop-risk-intelligence` |
+| Entry point | `worker/index.js` |
+| Assets | Directory `public`, binding `ASSETS`. `/api/*` and `/health` run the Worker first; other requests are served from `public/` |
+| Secrets | None |
+| Bindings | `ASSETS` only |
+| Compatibility date | `2026-08-19` |
+| Observability | Enabled |
+
+Keep the Worker name `tiktok-shop-risk-intelligence` so https://tiktok-shop-risk-intelligence.madanmohanlearning.workers.dev/ stays the live URL. The Worker serves the sample bundled in `worker/index.js` and does not read the DuckDB warehouse.
 
 ## Repository structure
 
